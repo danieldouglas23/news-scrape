@@ -53,7 +53,7 @@ app.get("/scrape", function (req, res) {
 
       var link = $(element).find("h1.headline").children("a").attr("href");
 
-      var summary = $(element).find("div.item__content").find("p").text();
+      var summary = $(element).find("div.excerpt").children("p").text();
 
       scrapedDataArray.push({ 
         title: title,
@@ -131,6 +131,13 @@ app.post("/articles/:id", function(req, res) {
      // If an error occurs, send it back to the client
      res.json(err);
    });
+});
+
+app.post("/deleteComment/:id", function(req, res) {
+  db.Comment.findOneAndRemove({ id: req.params.id })
+  .then(function (dbComment) {
+    res.json(dbComment);
+  }).catch(function(err) { res.json(err) });
 });
 
 // Start the server
