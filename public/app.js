@@ -15,17 +15,17 @@ $.getJSON("/articles", function (data) {
         newArticleCard.addClass("card");
         var newArticleTitle = $("<h3>");
         var newArticleSummary = $("<h5>");
-        // var newArticleLink = $("<h7>");
-        var newArticleLink = $("<a>");
-        newArticleLink.attr("href", data[i].link);
         var hRule = $("<hr>");
         var spaceBreak = $("<br>");
+        var newArticleLink = $("<a>");
+        newArticleLink.attr("href", data[i].link);
+        newArticleLink.text(data[i].link);
+        
         newArticleTitle.text(data[i].title);
         newArticleTitle.css({
             color: "red"
         })
         newArticleSummary.text(data[i].summary);
-        // newArticleLink.text(data[i].link);
         newArticleCard.append(newArticleTitle);
         newArticleCard.append(spaceBreak);
         newArticleCard.append(newArticleSummary);
@@ -35,12 +35,16 @@ $.getJSON("/articles", function (data) {
         var commentButton = $("<button>");
         commentButton.text("Manage Comments");
         commentButton.addClass("manage-comments");
+        commentButton.attr("data-id", data[i]._id);
+        // commentButton.attr
+        // commentButton.setAttribute("data-id", data[i]._id);
+        // commentButton.setAttribute("data-id", data[i]._id);
         // commentButton.css({
         //     width: "200px"
         // });
         newArticleCard.append(commentButton);
         newArticleCard.append(hRule);
-        $("#articles").append("<p data-id='" + data[i]._id + "'></p>");
+        // $("#articles").append("<p data-id='" + data[i]._id + "'></p>");
         $("#articles").append(newArticleCard);
 
     }
@@ -63,7 +67,7 @@ $(document).on("click", ".manage-comments", function () {
         .then(function (data) {
             console.log(data);
             // The title of the article
-            $("#comments").append("<h3>" + data.title + "</h3>");
+            $("#comments").append("<h4>" + data.title + "</h4>");
             // An input to enter a new title
             $("#comments").append("<input id='titleinput' name='title' >");
             // A textarea to add a new comment body
