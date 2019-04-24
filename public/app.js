@@ -1,3 +1,5 @@
+
+
 // Grab the articles as a json
 $.getJSON("/articles", function (data) {
     // For each one
@@ -19,8 +21,8 @@ $.getJSON("/articles", function (data) {
         var spaceBreak = $("<br>");
         var newArticleLink = $("<a>");
         newArticleLink.attr("href", data[i].link);
+        newArticleLink.attr("target", "_blank");
         newArticleLink.text(data[i].link);
-        
         newArticleTitle.text(data[i].title);
         newArticleTitle.css({
             color: "red"
@@ -36,15 +38,8 @@ $.getJSON("/articles", function (data) {
         commentButton.text("Manage Comments");
         commentButton.addClass("manage-comments");
         commentButton.attr("data-id", data[i]._id);
-        // commentButton.attr
-        // commentButton.setAttribute("data-id", data[i]._id);
-        // commentButton.setAttribute("data-id", data[i]._id);
-        // commentButton.css({
-        //     width: "200px"
-        // });
         newArticleCard.append(commentButton);
         newArticleCard.append(hRule);
-        // $("#articles").append("<p data-id='" + data[i]._id + "'></p>");
         $("#articles").append(newArticleCard);
 
     }

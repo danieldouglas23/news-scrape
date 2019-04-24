@@ -133,11 +133,27 @@ app.post("/articles/:id", function(req, res) {
    });
 });
 
+// app.post("/deleteComment/:id", function(req, res) {
+//   db.Comment.findOneAndRemove({ id: req.params.id })
+//   .then(function (dbComment) {
+//     res.json(dbComment);
+//   }).catch(function(err) { res.json(err) });
+// });
+
 app.post("/deleteComment/:id", function(req, res) {
-  db.Comment.findOneAndRemove({ id: req.params.id })
-  .then(function (dbComment) {
-    res.json(dbComment);
-  }).catch(function(err) { res.json(err) });
+    db.Article.findOne({ _id: req.params.id })
+    .then(function (dbArticle) {
+      return db.Comment.findOneAndRemove({ _id: dbArticle.comment })
+    })
+    .then(function (dbArticle) {
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { $unset: { comment: "" }})   
+    })
+    .then(function (dbArticle) {
+      res.json(dbArticle);      
+    })
+    .catch(function (err) {
+      res.json(err);
+    })
 });
 
 // Start the server
