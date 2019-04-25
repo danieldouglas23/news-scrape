@@ -25,8 +25,13 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+
+mongoose.connect(MONGODB_URI);
+
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/onionScraper", { useNewUrlParser: true });
+// mongoose.connect("mongodb://localhost/onionScraper", { useNewUrlParser: true });
 
 // Hook mongojs configuration to the db variable
 // var db = mongojs(databaseUrl, collections);
