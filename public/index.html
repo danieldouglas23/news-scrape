@@ -1,59 +1,44 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>Scraping With Mongoose</title>
-    <style>
-      body { 
-        background: url("images/newspaper.jpg");
-       }
-       h1 {
-           background-color: lightblue;
-           width: 375px;
-       }
-      #wrapper {
-        width: 960px;
-        margin-left: auto;
-        margin-right: auto;
-        padding-top: 5%;
-        background: url("images/onion.jpg")
-      }
-      #articles {
-        display: inline-block;
-        overflow: auto;
-        width: 60%;
-        height: 700px;
-        background-color: lightblue;
-      }
-      #comments {
-        float: right;
-        width: 30%;
-        background-color: lightblue;
-      }
-      textarea, input {
-        display: block;
-        width: 100%;
-        background-color: #FCF5C7;
-      }
-      input {
-        height: 36px;
-        font-size: 24px;
-      }
-      textarea {
-        height: 200px;
-        font-size: 18px;
-      }
-    </style>
-  </head>
-  <body>
-      
-    <div id="wrapper">
-      <h1>TheOnion Politics Scraper</h1>
-      <div id="articles"></div>
-      <div id="comments"></div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
-    <script src="app.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Onion Scraping With Mongoose</title>
+  <style>
+    body {
+      background: url("images/newspaper.jpg");
+    }
+
+    h1 {
+      background-color: lightblue;
+      color: darkblue;
+      width: 640px;
+      margin-left: 345px;
+    }
+
+    button {
+      width: 900px;
+      height: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 5%;
+      background: url("images/onion.jpg");      
+    }
+
+    #container {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <button id="scrape-button"></button>
+    <h1>Click Image Above to View Current Articles!!</h1>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+  <script src="app.js"></script>
+</body>
+
 </html>

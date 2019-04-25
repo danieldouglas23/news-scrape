@@ -122,3 +122,13 @@ $(document).on("click", "#deletecomment", function () {
 
 });
 
+$(document).on("click", "#scrape-button", function () {
+    $.ajax({
+        method: "GET",
+        url: "/scrape"
+    })
+    .then(function(result) {
+        location.href = "./index2.html";
+    });
+});
+

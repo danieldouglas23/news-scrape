@@ -5,6 +5,7 @@ var mongoose = require("mongoose");
 // Require axios and cheerio. This makes the scraping possible
 var axios = require("axios");
 var cheerio = require("cheerio");
+var path = require("path");
 
 // Require all models
 var db = require("./models");
@@ -35,10 +36,11 @@ mongoose.connect("mongodb://localhost/onionScraper", { useNewUrlParser: true });
 
 // Main route (simple Hello World Message)
 app.get("/", function (req, res) {
-  res.send("Hello world");
+  res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 app.get("/scrape", function (req, res) {
+  
   // Making a request via axios for theonion politics page
   axios.get("https://politics.theonion.com/").then(function (response) {
 
@@ -55,82 +57,86 @@ app.get("/scrape", function (req, res) {
 
       var summary = $(element).find("div.excerpt").children("p").text();
 
-      scrapedDataArray.push({ 
+      scrapedDataArray.push({
         title: title,
         link: link,
         summary: summary
       });
 
-      
+
     });
     // Create a new Article using the data array built from scraping
     db.Article.create(scrapedDataArray)
-    .then(function(dbArticle) {
-      // View the added result in the console
-      console.log(dbArticle);
-    })
-    .catch(function(err) {
-      // If an error occurred, log it
-      console.log(err);
-    });
-    
+      .then(function (dbArticle) {
+        // View the added result in the console
+        console.log(dbArticle);
+      })
+      .catch(function (err) {
+        // If an error occurred, log it
+        console.log(err);
+      });
+
     // Send a message to the client
-    res.send("Scrape Complete");
+    // res.send("Scrape Complete");
+  })
+  .then(function () {
+    res.sendFile(path.join(__dirname, "./public/index2.html"));
   });
+  
 });
 
 // Route for getting all Articles from the db
-app.get("/articles", function(req, res) {
+app.get("/articles", function (req, res) {
   // TODO: Finish the route so it grabs all of the articles
   db.Article.find({})
-    .then(function(dbArticle) {
+    .then(function (dbArticle) {
       // If any Articles are found, send them to the client
       res.json(dbArticle);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       // If an error occurs, send it back to the client
       res.json(err);
     });
 });
 
 // Route for grabbing a specific Article by id, populate it with it's comment
-app.get("/articles/:id", function(req, res) {
+app.get("/articles/:id", function (req, res) {
   // TODO
   // ====
   // Finish the route so it finds one article using the req.params.id,
   // and run the populate method with "comment",
   // then responds with the article with the comment included
   db.Article.findOne({ _id: req.params.id })
-  .populate("comment")
-  .then(function (dbArticle) {
-    res.json(dbArticle);
-  })
-  .catch(function (err) {
-    // If an error occurs, send it back to the client
-    res.json(err);
-  });
+    .populate("comment")
+    .then(function (dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function (err) {
+      // If an error occurs, send it back to the client
+      res.json(err);
+    });
 
 });
 
 // Route for saving/updating an Article's associated Comment
-app.post("/articles/:id", function(req, res) {
+app.post("/articles/:id", function (req, res) {
   // TODO
   // ====
   // save the new comment that gets posted to the Comments collection
   // then find an article from the req.params.id
   // and update it's "comment" property with the _id of the new comment
-   // Create a new Comment in the db
-   db.Comment.create(req.body)
-   .then(function (dbComment) {
-     return db.Article.findOneAndUpdate({ _id: req.params.id }, { $set: { comment: dbComment._id } }, { new: true });
-   })
-   .then(function (dbArticle) {
-     res.json(dbArticle);
-   })
-   .catch(function (err) {
-     // If an error occurs, send it back to the client
-     res.json(err);
-   });
+  // Create a new Comment in the db
+  db.Comment.create(req.body)
+    .then(function (dbComment) {
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { $set: { comment: dbComment._id } }, { new: true });
+    })
+    .then(function (dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function (err) {
+      // If an error occurs, send it back to the client
+      res.json(err);
+    });
 });
 
 // app.post("/deleteComment/:id", function(req, res) {
@@ -140,16 +146,16 @@ app.post("/articles/:id", function(req, res) {
 //   }).catch(function(err) { res.json(err) });
 // });
 
-app.post("/deleteComment/:id", function(req, res) {
-    db.Article.findOne({ _id: req.params.id })
+app.post("/deleteComment/:id", function (req, res) {
+  db.Article.findOne({ _id: req.params.id })
     .then(function (dbArticle) {
       return db.Comment.findOneAndRemove({ _id: dbArticle.comment })
     })
     .then(function (dbArticle) {
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { $unset: { comment: "" }})   
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { $unset: { comment: "" } })
     })
     .then(function (dbArticle) {
-      res.json(dbArticle);      
+      res.json(dbArticle);
     })
     .catch(function (err) {
       res.json(err);
@@ -157,7 +163,7 @@ app.post("/deleteComment/:id", function(req, res) {
 });
 
 // Start the server
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("App running on port " + PORT + "!");
 });
 
