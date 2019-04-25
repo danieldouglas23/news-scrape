@@ -122,7 +122,7 @@ $(document).on("click", "#deletecomment", function () {
 
 });
 
-$(document).on("click", "#scrape-button", function () {
+$(document).on("click", "#scrapebutton", function () {
     $.ajax({
         method: "GET",
         url: "/scrape"
